@@ -1,6 +1,22 @@
 import pytest
 from model import Question
 
+@pytest.fixture
+def single_select_question():
+    q = Question(title='q (single)', max_selections=1)
+    cA = q.add_choice('A', is_correct=True)
+    cB = q.add_choice('B', is_correct=False)
+    cC = q.add_choice('C', is_correct=False)
+    return q, {'A': cA.id, 'B': cB.id, 'C': cC.id}
+
+@pytest.fixture
+def question_with_choices():
+    q = Question(title='q (fixture)', max_selections=2)
+    c1 = q.add_choice('a', is_correct=True)
+    c2 = q.add_choice('b', is_correct=False)
+    c3 = q.add_choice('c', is_correct=True)
+    c4 = q.add_choice('d', is_correct=False)
+    return q, {'a': c1.id, 'b': c2.id, 'c': c3.id, 'd': c4.id}
 
 def test_create_question():
     question = Question(title='q1')
@@ -115,3 +131,26 @@ def test_correct_selected_choices_returns_only_correct_in_selection_order():
     c3 = q.add_choice('c', is_correct=True)
     result = q.correct_selected_choices([c3.id, c1.id, c2.id])
     assert result == [c3.id, c2.id]
+
+def test_correct_selected_choices_preserves_order_with_fixture(question_with_choices):
+    q, ids = question_with_choices
+    result = q.correct_selected_choices([ids['c'], ids['a']])
+    assert result == [ids['c'], ids['a']]
+
+def test_remove_choice_by_id_twice_raises_with_fixture(question_with_choices):
+    q, ids = question_with_choices
+    q.remove_choice_by_id(ids['b'])
+    with pytest.raises(Exception):
+        q.remove_choice_by_id(ids['b'])
+
+def test_single_select_returns_correct_or_empty(single_select_question):
+    q, ids = single_select_question
+    assert q.correct_selected_choices([ids['A']]) == [ids['A']]
+    assert q.correct_selected_choices([ids['B']]) == []
+
+def test_single_select_set_correct_choices_then_validate(single_select_question):
+    q, ids = single_select_question
+    q.set_correct_choices([ids['B']])
+    with pytest.raises(Exception):
+        q.correct_selected_choices([ids['A'], ids['B']])
+    assert q.correct_selected_choices([ids['B']]) == [ids['B']]
