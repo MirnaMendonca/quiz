@@ -20,7 +20,7 @@ def test_create_question():
 
 def test_create_choice():
     question = Question(title='q1')
-    
+
     question.add_choice('a', False)
 
     choice = question.choices[0]
@@ -81,7 +81,7 @@ Para executar os testes localmente, basta rodar o comando `pytest -v tests.py`:
 ```
 $ pytest -v tests.py
 ========================================== test session starts ===========================================
-...                                                                                     
+...
 tests.py::test_create_question PASSED                                                              [ 20%]
 tests.py::test_create_multiple_questions PASSED                                                    [ 40%]
 tests.py::test_create_question_with_invalid_title PASSED                                           [ 60%]
@@ -93,9 +93,9 @@ tests.py::test_create_choice PASSED                                             
 ### Faça o commit para executar os testes remotamente (via GitHub Actions)
 
 Os testes serão executados automaticamente no GitHub Actions sempre que um commit é realizado.
-Portanto, para rodar os testes no GitHub Actions, realize uma alteração qualquer neste arquivo `README.md` e faça o commit da alteração com a seguinte mensagem: `Commit 1: Running the tests`.
+Portanto, para rodar os testes no GitHub Actions, realize uma alteração qualquer neste arquivo `README.md` e faça o commit da alteração com a seguinte mensagem: `Commit 1: Running the tests`. Fiz uma alteração aqui.
 
-Em seguida, clique na aba `Actions` e veja que os testes foram executados com sucesso no GitHub Actions. 
+Em seguida, clique na aba `Actions` e veja que os testes foram executados com sucesso no GitHub Actions.
 Observe as execuções em múltiplos sistemas operacionais (Ubuntu, macOS e Windows) e versões da linguagem Python.
 
 # Commit 2: Creating 10 unit tests
@@ -107,6 +107,7 @@ Rode os testes localmente com o comando `pytest -v tests.py`.
 Só faça o commit com os testes passando.
 
 ### Faça o commit
+
 Com os testes passando, faça o commit com a seguinte mensagem: `Commit 2: Creating 10 unit tests`.
 
 # Commit 3: Testing with fixtures
@@ -132,4 +133,5 @@ def test_in(data):
 ```
 
 ### Faça o commit
+
 Com os testes passando, faça o commit com a seguinte mensagem: `Commit 3: Testing with fixtures`.
